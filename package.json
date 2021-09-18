@@ -1,0 +1,29 @@
+{
+  "name": "spider-core",
+  "version": "1.0.0",
+  "description": "这是一个极简而优美的爬虫框架",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "dependencies": {
+    "async": "^3.2.1",
+    "cheerio": "^1.0.0-rc.10",
+    "got": "^11.8.2",
+    "iconv-lite": "^0.6.3",
+    "lodash": "^4.17.21",
+    "log4js": "^6.3.0",
+    "mkdirp": "^1.0.4",
+    "moment": "^2.29.1",
+    "mysql2": "^2.3.0",
+    "sequelize": "^6.6.5",
+    "tough-cookie": "^4.0.0",
+    "uuid": "^8.3.2"
+  },
+  "scripts": {
+    "test": "mocha ./test/index.js"
+  },
+  "author": "harry",
+  "license": "ISC"
+}
