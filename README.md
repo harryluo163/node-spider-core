@@ -4,10 +4,6 @@
 [![NPM package version](https://img.shields.io/npm/v/node-spider-core?label=npm%20package)](https://www.npmjs.com/package/node-spider-core)
 
 # 简单快捷的NodeJS爬虫框架
-A simple caching module that has `set`, `get` and `delete` methods and works a little bit like memcached.
-Keys can have a timeout (`ttl`) after which they expire and are deleted from the cache.
-All keys are stored in a single object so the practical limit is at around 1m keys.
-
 
 # Install
 
@@ -24,12 +20,7 @@ All keys are stored in a single object so the practical limit is at around 1m ke
 ```js
 const NodeCache = require( "node-spider-core" );
 
-let spider= nodespider.getInstance({
-    SpiderConcurrency:1,//抓取队列并行运行值
-    AnalysisConcurrency:1,//分析队列并行运行值
-    DBConcurrency:1,//数据库插入队列并行运行值
-    SpiderSleep:5000,
-})
+let spider= nodespider.getInstance()
 
 spider.clsPageUrl.push(1)
 spider.clsPageContent.push(2)
@@ -72,6 +63,45 @@ spider.clsDB.push(3)
 - `priority`: *(default:1)* 优先级 1.广度 2.深度 3.最佳
 
 
+# Methods
+spider.clsPageUr  //抓取队列
+spider.clsPageContent //分析队列
+spider.clsDB //数据库插入队列
+```js
+let spider= nodespider.getInstance()
+
+
+// 向抓取队列插入一条。先进先出
+spider.clsPageUrl.push({name: 'bar'});
+// 向抓取队列插入一组
+q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function(err) {
+    console.log('finished processing item');
+});
+//插到最前面 
+spider.clsPageUrl.unshift({name: 'bar'}, function (err) {
+
+});
+
+spider.clsPageUrl.drain(function() {
+    console.log('抓取队列中所有数据已经处理完');
+});
+
+// 向抓取队列插入一条。先进先出
+spider.clsPageUrl.push({name: 'bar'});
+// 向抓取队列插入一组
+q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function(err) {
+    console.log('finished processing item');
+});
+//插到最前面 
+spider.clsPageUrl.unshift({name: 'bar'}, function (err) {
+
+});
+
+spider.clsPageUrl.drain(function() {
+    console.log('抓取队列中所有数据已经处理完');
+});
+
+```
 
 
 
