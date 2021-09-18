@@ -16,8 +16,8 @@
     "log4js": "^6.3.0",
     "mkdirp": "^1.0.4",
     "moment": "^2.29.1",
-    "mysql2": "^2.3.0",
     "sequelize": "^6.6.5",
+    "sqlite3": "^5.0.2",
     "tough-cookie": "^4.0.0",
     "uuid": "^8.3.2"
   },
