@@ -3,7 +3,7 @@
 
 [![NPM package version](https://img.shields.io/npm/v/node-spider-core?label=npm%20package)](https://www.npmjs.com/package/node-spider-core)
 
-# 简单快捷的NodeJS爬虫框架
+# 简单快捷的NodeJS爬虫队列框架
 
 # Install
 
@@ -61,6 +61,30 @@ spider.clsDB.push(3)
 - `AnalysisConcurrency`: *(default:1)* 分析队列并行运行值
 - `DBConcurrency`: *(default:1)* 数据库插入队列并行运行值
 - `priority`: *(default:1)* 优先级 1.广度 2.深度 3.最佳
+- `FisrtDatUrl`: *(default:DatUrl)* 开始第一个url
+
+### Options.FisrtDatUrl
+- `ID`: *(default:`uuid.v4()`)* 随机生成
+- `KeyWord`: *(default:`''`)*
+- `ProgramName`: *(default:`"Options.ProgramName"`)* 
+- `SpiderDate`: *(default:`Options.SpiderDate`)* 抓取日期
+- `PID`: *(default:`""`)*
+- `SiteUrl`: *(default:`""`)* 站点url
+- `SType`: *(default:`"Portal"`)* 类型·
+- `SourUrl`: *(default:`""`)* 父页面路径
+- `Url`: *(default:``)* 站点路径
+- `UrlType`: *(default:`GET`)* 抓取方式(GET/POST/MGET)
+- `UrlPara`: *(default:``)* 参数
+- `EnCode`: *(default:`'UTF-8'`)* 编码方式
+- `APara`: *(default:`''`)* 附加参数
+- `CookieContent`: *(default:``)* Cookie值
+- `AContent`: *(default:``)* 附加内容
+- `PConent`: *(default:``)* 页面内容
+- `ErrorMsg`: *(default:``)* 错误信息
+- `TrySpiderTimes`: *(default:`1`)* 抓取次数
+- `Depth`: *(default:`1`)* 抓取深度
+- `SpiderTime`: *(default:`moment().format('YYYY-MM-DD HHs ss')`)* 抓取时间
+- `UseclsPageUrl`: *(default:`false`)* 是否使用自己定义的请求方法，监听clsPageUrl事件
 
 
 # Methods
@@ -123,5 +147,16 @@ spider.on("clsDB",function (task){
     console.log("处理"+task)
     console.log("还有"+spider.clsPageUrl.length())
 })
+
+//触发重试
+spider.on("retry",function (num){
+    console.log('第'+num+'次抓取完成')
+})
+
+spider.on("finish",function (){
+    console.log("抓取结束")
+})
+
+
 ```
 
