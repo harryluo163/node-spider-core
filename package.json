@@ -24,6 +24,10 @@
   "scripts": {
     "test": "mocha ./test/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:harryluo163/node-spider-core.git"
+  },
   "author": "harry",
   "license": "ISC"
 }
