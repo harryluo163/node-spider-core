@@ -7,7 +7,6 @@ function start(){
         SpiderConcurrency:1,//抓取队列并行运行值
         AnalysisConcurrency:1,//分析队列并行运行值
         DBConcurrency:1,//数据库插入队列并行运行值
-        SpiderSleep:5000,
         FisrtDatUrl: {
             Url:"https://www.csdn.net/"
         }

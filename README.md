@@ -63,7 +63,34 @@ let spider= nodespider.getInstance({
 - `DBConcurrency`: *(default:1)* 数据库插入队列并行运行值
 - `priority`: *(default:1)* 优先级 1.广度 2.深度 3.最佳
 - `FisrtDatUrl`: *(default:DatUrl)* 开始第一个url
+- `mydb`: *(default:Sequelize对象)* 默认初始化一个sqlite本地数据库，用于抓取url，错误url的
+保存，去重、重抓，如果你想用自己的，按需初始化，里面只有两个表，DatStatus状态表、DatUrl url表。
+```js
+ mydb: new Sequelize({
+                        host: 'localhost',
+                        dialect: 'sqlite',
+                        pool: {
+                            max: 2000,//池中最大连接数
+                            acquire: 300000,//该池在抛出错误之前尝试获取连接的最长时间（以毫秒为单位）
+                            idle: 100000//连接在被释放之前可以空闲的最长时间（以毫秒为单位）。
+                        },
+                        operatorsAliases: 0,
+                        logging: 0,
+                        storage: './database.sqlite'
+                    })
 
+//如果自己想自定义
+mydb:new Sequelize(
+    "表名",
+    "sa",
+    "xxxx", {
+        dialect: 'mssql',
+        host: 'localhost',
+        port: 1433,
+        logging: 0,
+    }
+)
+```
 ### Options.FisrtDatUrl
 - `ID`: *(default:`uuid.v4()`)* 随机生成
 - `KeyWord`: *(default:`''`)*
@@ -92,6 +119,7 @@ let spider= nodespider.getInstance({
 spider.clsPageUr  //抓取队列
 spider.clsPageContent //分析队列
 spider.clsDB //数据库插入队列
+spider.SaveUrl(tast)//添加到重抓url，需开启 MaxTrySpidertimes最大失败次数
 ```js
  var spider= nodespider.getInstance({
     SpiderConcurrency:1,//抓取队列并行运行值
@@ -107,23 +135,26 @@ spider.clsDB //数据库插入队列
 spider1 =nodespider.getInstance()
 console.log(spider==spider1)
 
-spider1.on("clsPageContent",function (task){
+spider1.on("clsPageContent",function (task,resolve){
     console.log("处理分析队列"+task.Portal)
     console.log("内容是"+task.PContent)
     console.log("使用正则或者cheerio分析返回数据")
     console.log("获取列表****")
     console.log("加入数据库队列使用 spider.clsDB.push()  加入抓取队列 spider.clsDB.push()")
+    resolve()
 })
 
-spider1.on("clsDB",function (task){
+spider1.on("clsDB",function (task,resolve){
     console.log("处理数据库插入队列"+task.Portal)
     console.log("还有"+spider.clsPageUrl.length())
+    resolve()
 })
 
 //当option.FisrtDatUrl.UseclsPageUrl==true 可触发这个事件，就可以自定义http请求了
-spider1.on("clsPageUrl",function (task){
+spider1.on("clsPageUrl",function (task,resolve){
     console.log("处理自定义抓取队列"+task.Portal)
     console.log("还有"+spider.clsPageUrl.length())
+    resolve()
 })
 //触发重试 设置MaxTrySpidertimes最大失败次数 以及CheckTime 检查周期
 spider1.on("retry",function (num){
@@ -208,6 +239,11 @@ spider.on("retry",function (num){
 spider.on("finish",function (){
     console.log("抓取结束")
 })
+
+spider.on("start",function (){
+    console.log("开始抓取")
+})
+
 
 
 ```
